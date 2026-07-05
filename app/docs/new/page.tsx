@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createDocAction } from "@/app/lib/actions";
+import { DocContentField } from "@/app/docs/doc-content-field";
 
 export default function NewDocPage() {
   return (
@@ -17,12 +18,7 @@ export default function NewDocPage() {
         </label>
         <label className="flex flex-col gap-1 text-sm">
           Content
-          <textarea
-            name="content"
-            required
-            rows={8}
-            className="rounded border border-black/[.08] dark:border-white/[.145] px-3 py-2"
-          />
+          <DocContentField name="content" />
         </label>
         <label className="flex flex-col gap-1 text-sm">
           Author

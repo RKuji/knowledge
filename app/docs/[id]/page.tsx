@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import DOMPurify from "isomorphic-dompurify";
 import { getDoc } from "@/app/lib/docs-store";
 import { deleteDocAction } from "@/app/lib/actions";
 
@@ -40,7 +41,9 @@ export default async function DocPage({
       <p className="text-sm text-black/60 dark:text-white/60">
         by {doc.author}
       </p>
-      <p className="whitespace-pre-wrap">{doc.content}</p>
+      <div
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(doc.content) }}
+      />
       <Link href="/docs" className="text-sm hover:underline">
         ← Back to Docs
       </Link>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDoc } from "@/app/lib/docs-store";
 import { updateDocAction } from "@/app/lib/actions";
+import { DocContentField } from "@/app/docs/doc-content-field";
 
 export default async function EditDocPage({
   params,
@@ -32,13 +33,7 @@ export default async function EditDocPage({
         </label>
         <label className="flex flex-col gap-1 text-sm">
           Content
-          <textarea
-            name="content"
-            defaultValue={doc.content}
-            required
-            rows={8}
-            className="rounded border border-black/[.08] dark:border-white/[.145] px-3 py-2"
-          />
+          <DocContentField name="content" defaultValue={doc.content} />
         </label>
         <label className="flex flex-col gap-1 text-sm">
           Author

@@ -4,6 +4,9 @@
 /node_modules
 /.pnp
 .pnp.*
+
+# generated from node_modules/tinymce by scripts/copy-tinymce.mjs (postinstall)
+/public/tinymce
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
