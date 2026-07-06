@@ -1,8 +1,6 @@
 # Doc CRUD機能の実装
 
-## 目的
-
-`Doc`オブジェクト（プロパティ: `Title` / `Content` / `Author`）に対する作成・一覧表示・詳細表示・更新・削除（CRUD）機能を追加する。
+概要は[[../overview/doc-crud]]を参照。
 
 ## データストア
 
@@ -13,7 +11,7 @@
 
 ## Server Actions
 
-`app/lib/actions.ts`に`"use server"`ディレクティブ付きで以下を実装（[Mutating Data](../../node_modules/next/dist/docs/01-app/01-getting-started/07-mutating-data.md)の規約に準拠）。
+`app/lib/actions.ts`に`"use server"`ディレクティブ付きで以下を実装（[Mutating Data](../../../node_modules/next/dist/docs/01-app/01-getting-started/07-mutating-data.md)の規約に準拠）。
 
 - `createDocAction(formData)`: `docs-store`の`createDoc`を呼び出し、`/docs`を`revalidatePath`した上で作成したDocの詳細ページへ`redirect`
 - `updateDocAction(formData)`: `updateDoc`を呼び出し、`/docs`と`/docs/[id]`を`revalidatePath`した上で詳細ページへ`redirect`
@@ -21,14 +19,7 @@
 
 いずれも`<form action={...}>`から`FormData`を受け取る形で、フォームからの直接呼び出し（プログレッシブエンハンスメント）に対応する。
 
-## 画面構成
-
-| ルート | ファイル | 役割 |
-| --- | --- | --- |
-| `/docs` | `app/docs/page.tsx` | Doc一覧表示、新規作成ページへのリンク |
-| `/docs/new` | `app/docs/new/page.tsx` | 新規作成フォーム（`createDocAction`） |
-| `/docs/[id]` | `app/docs/[id]/page.tsx` | Doc詳細表示、編集リンクと削除フォーム（`deleteDocAction`） |
-| `/docs/[id]/edit` | `app/docs/[id]/edit/page.tsx` | 編集フォーム（`updateDocAction`、`defaultValue`で初期値表示） |
+## 画面構成の補足
 
 - `[id]`のダイナミックセグメントは`params: Promise<{ id: string }>`として受け取り、`await`してから使用（Next.js 15以降の規約）。
 - 存在しない`id`の場合は`notFound()`で404を返す。
@@ -37,7 +28,7 @@
 ## 動作確認
 
 - `npm run build`が正常に完了することを確認済み（`/docs`は静的、`/docs/[id]`・`/docs/[id]/edit`は動的ルートとして出力）
-- `npm run dev`起動後、Playwright（`docs/spec/playwright-setup.md`参照）で以下のフローを自動操作し、期待通りの結果になることを確認済み
+- `npm run dev`起動後、Playwright（[[playwright-setup]]参照）で以下のフローを自動操作し、期待通りの結果になることを確認済み
   1. `/docs`が空の場合に「No docs yet.」と表示される
   2. `/docs/new`からTitle・Content・Authorを入力して作成すると、詳細ページ（`/docs/[id]`）にリダイレクトされ、入力した内容が表示される
   3. `/docs`一覧に作成したDocのタイトルが表示される
