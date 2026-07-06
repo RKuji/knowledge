@@ -1,12 +1,17 @@
 <!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# あなた（AI）が学習データで知っているNext.jsの知識は古い可能性が高い
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+このバージョンには破壊的変更が加えられており、APIや規約、ファイル構成が学習データとは異なっている場合があります。コードを書く前に、`node_modules/next/dist/docs/`内の該当するガイドを必ず読んでください。非推奨（deprecation）の警告にはきちんと従ってください。
 <!-- END:nextjs-agent-rules -->
 
-# Working rules
+# 作業ルール
 
-- Every implementation performed in this repo must be documented as Markdown files under `docs/spec/`, split into an overview and a detail doc with the same filename:
-  - `docs/spec/overview/<name>.md`: 概要設計書（目的・画面構成など、何を実現するかの要点）
-  - `docs/spec/detail/<name>.md`: 詳細設計書（データ構造・実装内容・動作確認など）
-- Before executing a command or asking for approval to run one, first output the content of that command in Japanese (what it does), then proceed to the execution/approval step.
+- 本リポジトリで行った実装は、必ずMarkdownファイルとしてドキュメント化すること。
+  - アプリケーションの機能（ユーザー向けの機能）: `docs/spec/`配下に、同名の概要設計書と詳細設計書に分けて作成する。
+    - `docs/spec/overview/<name>.md`: 概要設計書（機能の目的・画面構成など、何を実現するかの要点。機能の説明のみを置き、手順や環境構築、機能ではない実装変更は置かない）
+    - `docs/spec/detail/<name>.md`: 詳細設計書（データ構造・実装内容・動作確認など）
+  - 機能でも手順でもない実装変更: 概要は作らず、詳細設計書のみ作成する。
+    - `docs/spec/detail/<name>.md`
+  - 機能ではない作業（手順、環境構築・ツール導入）: 概要・詳細に分けず、`docs/setup/`配下に1ファイルで作成する。
+    - `docs/setup/<name>.md`: 手順・環境構築のドキュメント
+- コマンドを実行する前、または実行の承認を求める前に、まずそのコマンドの内容（何をするものか）を日本語で出力してから、実行・承認のステップに進むこと。

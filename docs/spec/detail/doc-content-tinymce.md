@@ -42,7 +42,7 @@
 ## 動作確認
 
 - `npm run build`が正常に完了することを確認済み。
-- `npm run dev`起動後、Playwright（[[playwright-setup]]参照）で以下を自動操作し、期待通りの結果になることを確認済み。
+- `npm run dev`起動後、Playwright（[[../../setup/playwright-setup]]参照）で以下を自動操作し、期待通りの結果になることを確認済み。
   1. `/docs/new`でTinyMCEのツールバー・編集領域が表示される。
   2. 本文を入力し、太字（Ctrl+B）を適用してCreateすると、詳細ページ（`/docs/[id]`）にリダイレクトされ、太字を含むリッチテキストが反映される。
   3. `/docs/[id]/edit`を開くと、保存済みのHTML（`<p>Hello from TinyMCE<strong> bold text</strong></p>`）がTinyMCEの編集領域に正しく読み込まれる。

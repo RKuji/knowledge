@@ -28,7 +28,7 @@
 ## 動作確認
 
 - `npm run build`が正常に完了することを確認済み（`/docs`は静的、`/docs/[id]`・`/docs/[id]/edit`は動的ルートとして出力）
-- `npm run dev`起動後、Playwright（[[playwright-setup]]参照）で以下のフローを自動操作し、期待通りの結果になることを確認済み
+- `npm run dev`起動後、Playwright（[[../../setup/playwright-setup]]参照）で以下のフローを自動操作し、期待通りの結果になることを確認済み
   1. `/docs`が空の場合に「No docs yet.」と表示される
   2. `/docs/new`からTitle・Content・Authorを入力して作成すると、詳細ページ（`/docs/[id]`）にリダイレクトされ、入力した内容が表示される
   3. `/docs`一覧に作成したDocのタイトルが表示される
