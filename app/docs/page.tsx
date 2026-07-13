@@ -5,7 +5,7 @@ export default function DocsPage() {
   const docs = listDocs();
 
   return (
-    <div className="flex flex-col gap-6 p-8">
+    <div className="flex flex-col gap-6 p-8 max-w-full">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Docs</h1>
         <Link
@@ -21,12 +21,12 @@ export default function DocsPage() {
           No docs yet.
         </p>
       ) : (
-        <ul className="flex flex-col divide-y divide-black/[.08] dark:divide-white/[.145]">
+        <ul className="divide-y divide-black/[.08] dark:divide-white/[.145]">
           {docs.map((doc) => (
             <li key={doc.id} className="py-3">
               <Link
                 href={`/docs/${doc.id}`}
-                className="font-medium hover:underline"
+                className="block truncate font-medium hover:underline"
               >
                 {doc.title}
               </Link>

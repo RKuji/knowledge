@@ -1,4 +1,4 @@
-# 画面レイアウトの変更（左nav / 右メイン）
+# 画面レイアウト（左nav / 右メイン）
 
 ## 目的
 
@@ -8,19 +8,21 @@
 
 ```
 <body class="flex">
-  <aside class="w-64 shrink-0 border-r ...">  <!-- 左: navmenu -->
-    <nav></nav>
+  <aside class="w-64 shrink-0 border-r ...">          <!-- 左: navmenu -->
+    <nav>
+      <a href="/docs">Docs</a>
+    </nav>
   </aside>
-  <main class="flex-1 flex flex-col">          <!-- 右: メイン表示エリア -->
+  <main class="min-w-0 flex-1 flex flex-col">          <!-- 右: メイン表示エリア -->
     {children}
   </main>
 </body>
 ```
 
-## 変更内容
+## 構成要素
 
-- `app/nav-menu.tsx`: 新規作成。左側に固定幅（`w-64`）で表示する`NavMenu`コンポーネント。中身は空の`<nav>`で、今後メニュー項目を追加していく想定
-- `app/layout.tsx`: `<body>`を横並びのflexコンテナに変更し、`<NavMenu />`（左）と`<main className="flex-1 flex flex-col">{children}</main>`（右）を配置
+- `app/nav-menu.tsx`: 左側に固定幅（`w-64`）で表示する`NavMenu`コンポーネント。`/docs`へのリンクを持つ。
+- `app/layout.tsx`: `<body>`は横並びのflexコンテナで、`<NavMenu />`（左）と`<main>`（右）を配置する。`<main>`は`min-w-0`を持ち、ページ内に改行できない長い文字列があってもレイアウト全体が横に広がらないようにしている（[[doc-title-truncate]]参照）。
 
 ## 動作確認
 

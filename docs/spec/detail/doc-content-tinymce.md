@@ -1,43 +1,38 @@
-# Doc Contentの入力方法をTinyMCEに変更
+# Doc ContentのTinyMCE入力
 
 概要は[[../overview/doc-content-tinymce]]を参照。[[doc-crud]]も参照。
 
-## 変更内容
+## 依存ライブラリ
 
-### 依存ライブラリ
+- `tinymce`（本体、セルフホスト用） / `@tinymce/tinymce-react`（Reactラッパー） / `isomorphic-dompurify`（保存済みHTMLのサニタイズ用）を使用する。
+- TinyMCEはTiny CloudのAPIキーなしでセルフホストする。`scripts/copy-tinymce.mjs`が`node_modules/tinymce`を`public/tinymce`にコピーし、`package.json`の`postinstall`により`npm install`のたびに自動実行される。
+  - `public/tinymce`は`node_modules`から生成される成果物のため`.gitignore`の対象であり、リポジトリにはコミットしない。
 
-- `tinymce`（本体、セルフホスト用） / `@tinymce/tinymce-react`（Reactラッパー） / `isomorphic-dompurify`（保存済みHTMLのサニタイズ用）を`npm install`で追加。
-- TinyMCEはTiny CloudのAPIキーなしでセルフホストする方針とし、`scripts/copy-tinymce.mjs`で`node_modules/tinymce`を`public/tinymce`にコピーする。このスクリプトを`package.json`の`postinstall`に登録し、`npm install`のたびに自動実行されるようにした。
-  - `public/tinymce`は`node_modules`から生成される成果物のため`.gitignore`に追加し、リポジトリにはコミットしない。
+## エディタコンポーネント
 
-### エディタコンポーネント
+- `app/docs/doc-content-field.tsx`（`"use client"`）の`DocContentField`コンポーネントは、`@tinymce/tinymce-react`の`<Editor>`を`tinymceScriptSrc="/tinymce/tinymce.min.js"` / `licenseKey="gpl"`でセルフホスト設定して描画する。
+  - Server ActionsがFormData経由でフォーム送信を受け取る仕組み（[[doc-crud]]参照）と組み合わせるため、エディタの内容は`useState`で保持しつつ`<input type="hidden" name={name} value={value} />`に同期し、`onEditorChange`で更新する。
+  - `name`と`defaultValue`（編集時の初期値）をpropsとして受け取る汎用コンポーネントで、新規作成・編集の両フォームで共用する。
+- `app/docs/new/page.tsx`・`app/docs/[id]/edit/page.tsx`のContent欄は`<DocContentField name="content" />`（編集側は`defaultValue={doc.content}`）を使う。hidden inputはブラウザの入力検証の対象にならないため`required`属性は持たない。空文字での送信を防ぐ場合は別途JS側でのバリデーションが必要（未実装）。
 
-- `app/docs/doc-content-field.tsx`（`"use client"`）に`DocContentField`コンポーネントを新設。
-  - `@tinymce/tinymce-react`の`<Editor>`を`tinymceScriptSrc="/tinymce/tinymce.min.js"` / `licenseKey="gpl"`でセルフホスト設定して利用。
-  - Server Actionが`FormData`経由でフォーム送信を受け取る既存の仕組み（[[doc-crud]]参照）を変えずに使えるよう、エディタの内容を`useState`で保持しつつ`<input type="hidden" name={name} value={value} />`に同期し、`onEditorChange`で更新する。
-  - `name`と`defaultValue`（編集時の初期値）をpropsとして受け取る汎用コンポーネントとし、新規作成・編集の両フォームで共用。
-- `app/docs/new/page.tsx`・`app/docs/[id]/edit/page.tsx`の`Content`欄の`<textarea>`を`<DocContentField name="content" />`（編集側は`defaultValue={doc.content}`）に置き換え。
-  - 既存の`required`属性はhidden inputでは意味を持たない（ブラウザの入力検証はhidden要素をスキップする）ため削除。空文字での送信を防ぎたい場合は別途JS側でのバリデーションが必要（今回は未実装）。
+## 保存済みコンテンツの表示
 
-### 保存済みコンテンツの表示
+- Contentの保存形式はTinyMCEが出力するHTMLであるため、`app/docs/[id]/page.tsx`の詳細表示は`isomorphic-dompurify`でサニタイズした上で`dangerouslySetInnerHTML`により描画する。
+  - 保存されたHTMLをそのまま描画するとStored XSSのリスクがあるため、表示直前に必ず`DOMPurify.sanitize()`を通す。
+- データストア（`app/lib/docs-store.ts`）やServer Actions（`app/lib/actions.ts`）は`content`を単なる文字列として保存するのみで、値がプレーンテキストかHTMLかは関知しない。
 
-- Contentの保存形式がプレーンテキストからTinyMCEが出力するHTMLに変わったため、`app/docs/[id]/page.tsx`の詳細表示を`<p className="whitespace-pre-wrap">{doc.content}</p>`から、`isomorphic-dompurify`でサニタイズした上で`dangerouslySetInnerHTML`により描画する形に変更。
-  - 保存されたHTMLをそのまま描画するとStored XSSのリスクがあるため、表示直前に`DOMPurify.sanitize()`を通す。
-- データストア（`app/lib/docs-store.ts`）やServer Actions（`app/lib/actions.ts`）自体には変更なし（`content`は引き続き文字列として保存されるのみで、値がプレーンテキストかHTMLかは関知しない）。
+## クロスオリジンアクセス時の設定
 
-### 開発サーバーへのIPアドレスアクセス時の既知の問題
+- 開発サーバーに`localhost`ではなくIPアドレス等の別オリジンからアクセスすると、Next.jsのクロスオリジン保護機能により、TinyMCE本体（`/tinymce/tinymce.min.js`）を読み込むための動的な`<script>`挿入がサイレントにブロックされ、エディタが初期化されず`<textarea>`のまま表示される（ネットワークタブに`tinymce.min.js`へのリクエストが現れず、`/__nextjs_font/...`が403、サーバーログに`Blocked cross-origin request to Next.js dev resource ...`と出力される）。
+- これを避けるため、`next.config.ts`の`allowedDevOrigins`にアクセス元のオリジンを設定する。
 
-- `localhost`ではなくIPアドレス（例: `http://172.16.148.22:3000`）で開発サーバーにアクセスすると、Next.jsの開発サーバーが標準で持つクロスオリジン保護機能により、TinyMCE本体（`/tinymce/tinymce.min.js`）を読み込むための動的な`<script>`挿入がサイレントにブロックされ、エディタが初期化されず`<textarea>`のまま表示される事象を確認した。
-  - 症状: ネットワークタブに`tinymce.min.js`へのリクエストが一切現れず、コンソールにもエラーが出ない。ただし`/__nextjs_font/...`へのリクエストは403 Forbiddenになり、`Blocked cross-origin request to Next.js dev resource ...`という警告がサーバーログに出力される。
-  - 対処として`next.config.ts`に`allowedDevOrigins`を追加し、アクセス元のオリジンを許可した。
+  ```ts
+  const nextConfig: NextConfig = {
+    allowedDevOrigins: ["172.16.148.22"],
+  };
+  ```
 
-    ```ts
-    const nextConfig: NextConfig = {
-      allowedDevOrigins: ["172.16.148.22"],
-    };
-    ```
-
-  - `next.config.ts`の変更は開発サーバー起動時にのみ読み込まれるため、設定後は`npm run dev`の再起動が必要。
+  `next.config.ts`の変更は開発サーバー起動時にのみ読み込まれるため、設定後は`npm run dev`の再起動が必要。
 
 ## 動作確認
 

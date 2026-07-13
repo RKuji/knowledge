@@ -4,7 +4,7 @@ import { DocContentField } from "@/app/docs/doc-content-field";
 
 export default function NewDocPage() {
   return (
-    <div className="flex flex-col gap-6 p-8 max-w-2xl">
+    <div className="flex flex-col gap-6 p-8 max-w-full">
       <h1 className="text-xl font-semibold">New Doc</h1>
       <form action={createDocAction} className="flex flex-col gap-4">
         <label className="flex flex-col gap-1 text-sm">

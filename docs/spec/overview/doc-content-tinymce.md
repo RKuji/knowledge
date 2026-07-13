@@ -1,12 +1,12 @@
-# Doc Contentの入力方法をTinyMCEに変更
+# Doc ContentのTinyMCE入力
 
 ## 目的
 
-[[doc-crud]]で実装したDoc作成・編集フォームの`Content`欄を、プレーンテキストの`<textarea>`からリッチテキストエディタ（TinyMCE）に変更する。
+[[doc-crud]]のDoc作成・編集フォームで、`Content`欄をリッチテキストエディタ（TinyMCE）による入力とする。
 
 ## 概要
 
-- 新設の`DocContentField`コンポーネントにより、`Content`欄をTinyMCEのリッチテキストエディタに置き換える。
-- 保存されるコンテンツはプレーンテキストからHTMLに変わるため、詳細表示側はサニタイズした上でHTMLとして描画する。
+- `Content`欄は、新設の`DocContentField`コンポーネントによりTinyMCEのリッチテキストエディタで入力する。
+- 保存されるコンテンツはHTMLであり、詳細表示側はサニタイズした上でHTMLとして描画する。
 
 詳細設計は[[../detail/doc-content-tinymce]]を参照。

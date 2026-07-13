@@ -17,7 +17,7 @@ export default async function EditDocPage({
   }
 
   return (
-    <div className="flex flex-col gap-6 p-8 max-w-2xl">
+    <div className="flex flex-col gap-6 p-8 max-w-full">
       <h1 className="text-xl font-semibold">Edit Doc</h1>
       <form action={updateDocAction} className="flex flex-col gap-4">
         <input type="hidden" name="id" value={doc.id} />

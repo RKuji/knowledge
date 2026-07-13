@@ -1,8 +1,8 @@
-# Doc CRUD機能の実装
+# Doc CRUD機能
 
 ## 目的
 
-`Doc`オブジェクト（プロパティ: `Title` / `Content` / `Author`）に対する作成・一覧表示・詳細表示・更新・削除（CRUD）機能を追加する。
+`Doc`オブジェクト（プロパティ: `Title` / `Content` / `Author`）に対する作成・一覧表示・詳細表示・更新・削除（CRUD）機能を提供する。
 
 ## 画面構成
 

@@ -1,0 +1,143 @@
+/*
+ * プレビュー画面（app/docs/[id]/page.tsx）とTinyMCEエディタ
+ * （app/docs/doc-content-field.tsx）の両方から参照する共通スタイル。
+ * 見た目を揃えるため、どちらも同じ `.doc-content` クラスのスコープで
+ * このファイルを読み込む。
+ */
+
+.doc-content {
+	--color-primary: #2f51b4;
+	margin: 0;
+	padding: 3.1rem !important;
+	max-width: 100%;
+
+	h1 {
+		font-size: 1.8rem;
+		margin: 0 1.8rem 0.5rem 1.8rem;
+		text-align: center;
+		border-bottom: 1px solid gainsboro;
+		padding-bottom: 0.5rem;
+	}
+
+	h2 {
+		font-size: 1.6rem;
+		padding: 0.6rem;
+		border-bottom: 3px solid var(--color-primary);
+		margin-top: 2.5rem;
+		margin-bottom: 0.8rem;
+	}
+
+	h3 {
+		font-size: 1.25rem;
+		border-left: 7px solid var(--color-primary);
+		padding-left: 0.9rem;
+		margin-top: 2.5rem;
+		margin-bottom: 0.8rem;
+	}
+
+	h4 {
+		font-size: 1rem;
+		border-left: 1px solid var(--color-primary);
+		padding-left: 1.8rem;
+		margin-top: 1rem;
+		margin-bottom: 0.8rem;
+	}
+
+	p {
+		font-size: 1rem;
+		margin-bottom: 0.5rem;
+	}
+
+	img {
+		max-width: 80%;
+		max-height: 500px;
+		margin: 1rem auto 2.8rem auto;
+		text-align: center;
+		display: block;
+		border: 1px solid #c1d0ff;
+		border-radius: 10px;
+	}
+
+	table {
+		thead, th {
+			background-color: gainsboro;
+			font-weight: bolder;
+		}
+
+		col {
+			min-width: 3rem;
+		}
+
+		th, td {
+			padding: 0.3rem 0.5rem;
+			border: 1px solid silver;
+		}
+
+		th, td, p {
+			font-size: 0.8rem;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	li {
+		margin-bottom: 0.6rem;
+
+		li::marker {
+			font-weight: bold;
+		}
+	}
+
+	pre[class*="language-"] {
+		background: #1e1e1e;
+		color: #d4d4d4;
+		font-size: 0.9rem;
+		font-family: Consolas;
+		border-radius: 6px;
+		border: 1px solid #e5e7eb;
+		padding: 20px 16px 16px;
+		font-size: 14px;
+		line-height: 20px;
+		font-weight: 400;
+		position: relative;
+
+		.token.operator,
+		.token.entity {
+			background: none;
+		}
+
+		&::before {
+			font-family: Helvetica;
+			font-weight: 400;
+			color: #f9fafb;
+			font-size: 12px;
+			line-height: 18px;
+			right: 8px;
+			padding: 2px 4px;
+			background-color: dimgray;
+			top: -1px;
+			border-radius: 0 0 4px 4px;
+			position: absolute;
+		}
+
+		&.language-vb::before {
+			content: "Visual Basic"
+		}
+
+		&.language-sql::before {
+			content: "SQL"
+		}
+
+		&.language-plsql::before {
+			content: "PL/SQL"
+		}
+	}
+
+	.author {
+		margin-bottom: 2.5rem;
+		font-size: 0.8rem;
+		color: dimgray;
+	}
+}

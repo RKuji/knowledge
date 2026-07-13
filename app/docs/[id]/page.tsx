@@ -17,10 +17,12 @@ export default async function DocPage({
   }
 
   return (
-    <div className="flex flex-col gap-6 p-8 max-w-2xl">
+    <div className="flex flex-col gap-6 p-8 max-w-full">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">{doc.title}</h1>
-        <div className="flex gap-2">
+        <h1 className="min-w-0 truncate text-xl font-semibold">
+          {doc.title}
+        </h1>
+        <div className="flex shrink-0 gap-2">
           <Link
             href={`/docs/${doc.id}/edit`}
             className="rounded border border-black/[.08] dark:border-white/[.145] px-3 py-1.5 text-sm"
@@ -41,7 +43,9 @@ export default async function DocPage({
       <p className="text-sm text-black/60 dark:text-white/60">
         by {doc.author}
       </p>
+      <link rel="stylesheet" href="/styles/doc-content.css" />
       <div
+        className="doc-content"
         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(doc.content) }}
       />
       <Link href="/docs" className="text-sm hover:underline">

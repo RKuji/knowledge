@@ -28,6 +28,8 @@ export function DocContentField({
           plugins: "lists link table code",
           toolbar:
             "undo redo | blocks | bold italic | bullist numlist | link table | code",
+          content_css: "/styles/doc-content.css",
+          body_class: "doc-content",
         }}
       />
     </>
